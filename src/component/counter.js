@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-class Counter extends Component {
-   render() {
-      const {counter,increment,decrement,reset} = this.props;
-      return (
-         <div className = "App">
-            <div>{counter}</div>
-            <div>
-               <button onClick = {increment}>INCREMENT BY 1</button>
-            </div>
-            <div>
-               <button onClick = {decrement}>DECREMENT BY 1</button>
-            </div>
-            <button onClick = {reset}>RESET</button>
+import React from 'react';
+
+//const props = {counter,increment,decrement,reset};
+
+function Counter(props) {
+   return (
+      <div className = "App">
+         <div>{props.counter}</div>
+         <div>
+            <button onClick = {props.increment}>INCREMENT BY 1</button>
          </div>
-      );
-   }
+         <div>
+            <button onClick = {props.decrement}>DECREMENT BY 1</button>
+         </div>
+         <button onClick = {props.reset}>RESET</button>
+      </div>
+   );
 }
 export default Counter;
