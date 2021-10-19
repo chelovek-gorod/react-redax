@@ -3,8 +3,9 @@ import Counter from '../component/counter'
 import { increment, decrement, reset } from '../actions/action';
 
 const mapStateToProps = (state) => {
+   console.log(state);
    return {
-      counter: state
+      counter: `A: ${state.albums}; P: ${state.photos}`
    };
 };
 const mapDispatchToProps = (dispatch) => {
