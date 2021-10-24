@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
-import './App.css';
-import Counter from './container/counterContainer';
+import React from 'react';
+import Counter from './component/Counter';
 
-class App extends Component {
-   render() {
-      return (
-         <div className = "App">
-            <header className = "App-header">
-               <Counter/>
-            </header>
-         </div>
-      );
-   }
+import './App.css';
+
+function App() {
+   return (
+      <div className = "App">
+         <Counter />
+      </div>
+   );
 }
 export default App;
