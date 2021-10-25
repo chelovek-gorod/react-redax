@@ -1,13 +1,23 @@
-export function increment() {
+export function nextPage() {
    return {
-      type: 'INCREMENT'
+      type: 'NEXT_PAGE'
    }
 }
-export function decrement() {
+export function previousPage() {
    return {
-      type: 'DECREMENT'
+      type: 'PREVIOUS_PAGE'
    }
 }
-export function reset() {
-   return { type: 'RESET' }
+export function showAlbums() {
+   return {
+      type: 'SHOW_ALBUMS'
+   }
+}
+export function showPhotos(albumId) {
+   return {
+      type: 'SHOW_PHOTOS',
+      payload : {
+         albumId : albumId
+      }
+   }
 }
