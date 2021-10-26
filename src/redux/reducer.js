@@ -21,36 +21,57 @@ const initialState = {
       },{
          id:6,
          photos: ['g', 'h', 'j', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's']
+      },{
+         id:7,
+         photos: ['h', 'j', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u']
+      },{
+         id:8,
+         photos: ['j', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w']
+      },{
+         id:9,
+         photos: ['i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y']
       }
    ],
-   currentAlbum : -1,
-   page : 0,
+   showAlbums : true,
+   currentAlbum : 0,
+   pageAlbums : 0,
+   pagePhotos : 0,
    elementsOnPage : 6
 };
 
-function toPage(obj, toNext) {
-   let size = obj.currentAlbum < 0 ? obj.albumsArr.length : obj.albumsArr[obj.currentAlbum].length;
+function toPage(obj, page, toNext) { 
+   let size = obj.showAlbums ? obj.albumsArr.length : obj.albumsArr[obj.currentAlbum].photos.length;
    let pagesSize = Math.ceil((size + 1) / obj.elementsOnPage);
-   if(toNext) return (obj.page + 1 < pagesSize) ? obj.page + 1 : 0;
-   return (obj.page - 1 >= 0) ? obj.page - 1 : pagesSize - 1;
+   if(toNext) return (page + 1 < pagesSize) ? page + 1 : 0;
+   return (page - 1 >= 0) ? page - 1 : pagesSize - 1;
 }
 
 const reducer = (state = initialState, action) => {
 
    let obj = Object.assign({}, state);
-   console.log(obj);
    switch (action.type) {
-      case 'NEXT_PAGE': 
-         obj.page = toPage(obj, true);
+      case 'NEXT_PAGE':
+         if (obj.showAlbums) obj.pageAlbums = toPage(obj, obj.pageAlbums, true);
+         else obj.pagePhotos = toPage(obj, obj.pagePhotos, true);
          return obj;
       case 'PREVIOUS_PAGE': 
-         obj.page = toPage(obj, false);
+         if (obj.showAlbums) obj.pageAlbums = toPage(obj, obj.pageAlbums, false);
+         else obj.pagePhotos = toPage(obj, obj.pagePhotos, false);
          return obj;
       case 'SHOW_ALBUMS':
-         obj.currentAlbum = -1;
+         obj.showAlbums = true;
+         obj.pagePhotos = 0;
          return obj;
       case 'SHOW_PHOTOS':
-         obj.currentAlbum = action.payload.albumId;
+         obj.showAlbums = false;
+         obj.currentAlbum = action.albumId;
+         //obj.currentAlbum = action.payload.albumId;
+         return obj;
+      case 'ADD_ALBUM':
+         obj.albumsArr.push({id: obj.albumsArr.length,  photos: []});
+         return obj;
+      case 'ADD_PHOTO':
+         obj.albumsArr[obj.currentAlbum].photos.push('z' + obj.albumsArr[obj.currentAlbum].photos.length);
          return obj;
       default: return state;
    }

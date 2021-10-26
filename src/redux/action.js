@@ -16,8 +16,21 @@ export function showAlbums() {
 export function showPhotos(albumId) {
    return {
       type: 'SHOW_PHOTOS',
+      albumId : albumId
+      /*
       payload : {
          albumId : albumId
       }
+      */
+   }
+}
+export function addAlbum() {
+   return {
+      type: 'ADD_ALBUM'
+   }
+}
+export function addPhoto() {
+   return {
+      type: 'ADD_PHOTO',
    }
 }
