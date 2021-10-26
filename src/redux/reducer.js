@@ -1,5 +1,5 @@
 const initialState = {
-   albumsArr : [
+   albumsArr : [/*
       {
          id:0,
          photos: ['a', 'b' , 'c', 'd', 'e', 'f', 'g']
@@ -30,7 +30,7 @@ const initialState = {
       },{
          id:9,
          photos: ['i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y']
-      }
+      }*/
    ],
    showAlbums : true,
    currentAlbum : 0,
@@ -73,7 +73,11 @@ const reducer = (state = initialState, action) => {
       case 'ADD_PHOTO':
          obj.albumsArr[obj.currentAlbum].photos.push('z' + obj.albumsArr[obj.currentAlbum].photos.length);
          return obj;
+
+      case 'LOAD_ALBUMS':
+         obj.albumsArr = [...action.arr];
+         return obj;
       default: return state;
    }
 }
-export default reducer;
+export default reducer; // loadAlbums

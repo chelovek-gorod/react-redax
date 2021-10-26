@@ -34,3 +34,10 @@ export function addPhoto() {
       type: 'ADD_PHOTO',
    }
 }
+////
+export function loadAlbums(arr) {
+   return {
+      type: 'LOAD_ALBUMS',
+      arr : arr
+   }
+}

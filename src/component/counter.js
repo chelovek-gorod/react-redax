@@ -1,8 +1,35 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { nextPage, previousPage, showAlbums, showPhotos, addAlbum, addPhoto } from '../redux/action';
+import { nextPage, previousPage, showAlbums, showPhotos, addAlbum, addPhoto, loadAlbums } from '../redux/action';
 
 function Counter(props) {
+
+   function getAlbums() {
+      fetch("https://jsonplaceholder.typicode.com/albums")
+      .then(res => res.json())
+      .then(
+         (result) => {
+            sortAlbums(result);
+         })
+         .catch((error) => {
+            console.log(error);
+         })
+   }
+
+   function sortAlbums(albums) {
+      let albumsArr = [];
+      let currentId = 0;
+      let arrSize = albums.length;
+      for (let i = 0; i < arrSize; i++) {
+         if (currentId !== albums[i].userId) {
+            currentId = albums[i].userId;
+            albumsArr.push({ id: currentId, photos: [albums[i].title]});
+         } else {
+            albumsArr[currentId - 1].photos.push(albums[i].title);
+         }
+      }
+      setTimeout(props.loadAlbums, 1000, albumsArr);
+   }
 
    function getContent(albums, arr) {
       if (albums) return arr.map(album => {
@@ -32,6 +59,11 @@ function Counter(props) {
       return <span>1...<b>{'[' + pages.current + ']'}</b>...{pages.last}</span>
    }
 
+   if (props.loading) {
+      getAlbums();
+      return (<div className = "App">Loading...</div>);
+   }
+
    return (
       <div className = "App">
          <div className = "App">
@@ -47,6 +79,8 @@ function Counter(props) {
       </div>
    );
 }
+
+////////////////////////////////////////////////////////////////////////////////////////
 
 function outputAlbums(albumsArr, startPoint, lastPoint, maxSize) {
    let albumsOutputArr = [];
@@ -71,6 +105,9 @@ function outputPhotos(photosArr, startPoint, lastPoint, maxSize) {
 }
 
 const mapStateToProps = (state) => {
+
+   if (state.albumsArr.length === 0) return {loading : true};
+
    let startPoint = (state.showAlbums) ? state.pageAlbums * state.elementsOnPage : state.pagePhotos * state.elementsOnPage;
    let lastPoint = startPoint + state.elementsOnPage;
    let pages = {
@@ -100,6 +137,8 @@ const mapDispatchToProps = (dispatch) => {
       showPhotos: (id) => dispatch(showPhotos(id)),
       addAlbum: () => dispatch(addAlbum()),
       addPhoto: () => dispatch(addPhoto()),
+
+      loadAlbums: (arr) => dispatch(loadAlbums(arr))
    }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);
